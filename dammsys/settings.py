@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5h2e!^t)i))4l2h!+ev#8*kys6)wl0t94mf5!cl_mocx2cicsi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['47.103.217.210','127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'postgres',         #数据库名 
         'USER':'my_root',           #用户名 
         'PASSWORD': 'my_root@123',  #密码 
-        'HOST': '124.70.6.95',      #数据库IP地址
+        'HOST': '127.0.0.1',      #数据库IP地址
         'PORT': 26000,              #openGauss数据口的端口 
     } 
 }
@@ -134,6 +134,6 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 60 * 30  # 设置session过期时间为30分钟
+SESSION_COOKIE_AGE = 60 * 30            # 设置session过期时间为30分钟
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 当浏览器被关闭的时候将session失效，但是不能删除数据库的session数据
-SESSION_SAVE_EVERY_REQUEST = True  # 每次请求都要保存一下session
+SESSION_SAVE_EVERY_REQUEST = True       # 每次请求都要保存一下session
