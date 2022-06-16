@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DAMM汽车维修管理系统</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}"
+    />
+    <style>
+      /*设置背景图片*/
+      body {
+        background: url("{% static 'img/bg.jpg' %}") no-repeat;
+        background-size: cover;
+      }
+
+      .account {
+        background-color: #ffffff;
+        width: 400px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        box-shadow: 5px 5px 20px #aaa;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+        padding: 20px 40px;
+      }
+
+      .account h2 {
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .bd-example {
+        margin-right: 10px;
+        margin-left: 0;
+        margin-bottom: 10px;
+        border-width: 1px;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+      }
+
+      .form-check-inline {
+        display: inline-block;
+        margin-right: 1rem;
+      }
+
+      .all {
+        display: flex;
+        height: 70px;
+      }
+      .left {
+        width: 100px;
+        height: 50px;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+      }
+      .right {
+        flex: 1;
+        height: 50px;
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="account">
+      <h2>账号登录</h2>
+      <form method="POST" id="form-login" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label>用户名</label>
+          {{ form.name }}
+          <!-- <input type="text" class="form-control" placeholder="用户名" value="{{ form.username }}"> -->
+          <span style="color: red">{{ form.name.errors.0 }}</span>
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          {{ form.password }}
+          <!-- <input type="password" class="form-control" placeholder="密码" value="{{ form.password }}"> -->
+          <span style="color: red">{{ form.password.errors.0 }}</span>
+        </div>
+
+        <div class="bd-example">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="ident"
+              id="inlineRadio1"
+              value="客户"
+              checked
+            />
+            <label class="form-check-label" for="inlineRadio1">客户</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="ident"
+              id="inlineRadio2"
+              value="业务员"
+            />
+            <label class="form-check-label" for="inlineRadio2">业务员</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="ident"
+              id="inlineRadio3"
+              value="维修员"
+            />
+            <label class="form-check-label" for="inlineRadio3">维修员</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="ident"
+              id="inlineRadio4"
+              value="管理员"
+            />
+            <label class="form-check-label" for="inlineRadio4">管理员</label>
+          </div>
+        </div>
+
+        <div class="all">
+          <div class="left">
+            <input type="submit" value="登 录" class="btn btn-primary" />
+          </div>
+          <div class="right">
+            <a href="/register">新客户注册</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

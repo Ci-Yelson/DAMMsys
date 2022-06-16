@@ -1,0 +1,103 @@
+{% extends 'layout/home.html' %}
+
+{% block style %}
+    #main {
+        width: 300px;
+        //height: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .one {
+        margin-top:2px;
+        font-size:18px;
+        font-weight:900;
+        //background-color: aquamarine;
+    }
+    .two {
+        //margin-top:6px;
+        //background-color: peru;
+    }
+{% endblock %}
+
+{% block navbar %}
+<li><a href="/customer/">用户主页</a></li>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <div class='panel panel-default'>
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 车辆信息</div>
+                </div>    
+            </div>
+            <div class='panel-body'>
+                <form id='carInfo' novalidate>
+                    <div class='clearfix'>
+                    {% for field in carInfo %}
+                        <div class='col-xs-4'>
+                            {% if field.label != "状态" %}
+                                <label >{{field.label}}</label>
+                                {{field}}
+                                <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+                                <span class='error-msg' style="color: red;"></span> <br>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                        维修委托列表
+                    </div>
+                    {% comment %} <button class='two btn btn-link' id='btnAdd'> 新增车辆</button> {% endcomment %}
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>状态</th>
+                    <th>受理业务员</th>
+                    <th>总费用</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in orderList %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        <td><span class="label label-default">{{ obj.get_status_display }}</span></td>
+                        <td>{{ obj.sName }}</td>
+                        <td>{{ obj.cost }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/customer/order_detail/?orderId={{ obj.orderId }}">查看维修详情</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type='text/javascript'>
+
+    </script>
+
+{% endblock js %}
+
+

@@ -1,0 +1,157 @@
+{% extends 'layout/home.html' %}
+
+{% block style %}
+    #main {
+        //width: 600px;
+        //height: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .one {
+        margin-top:2px;
+        font-size:18px;
+        font-weight:900;
+        //background-color: aquamarine;
+    }
+    .two {
+        margin-top:6px;
+        //background-color: peru;
+    }
+
+    .all {
+        display: flex;
+        height: 70px;
+    }
+    .left {
+        width: 100px;
+        height: 50px;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+    }
+    .right {
+        flex: 1;
+        height: 50px;
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+    }
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="/salesman/">业务员主页</a></li>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <div class='panel panel-default'>
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'>
+                        维修项目信息 
+                        <span class="label label-danger">{{ workOrderStatus }}</span> 
+                        {% comment %} <a class="btn btn-link" href="#" onClick="javascript :history.back(-1);">返回</a> {% endcomment %}
+                    </div>
+                    {% comment %} <a class="btn btn-primary" href="/salesman/edit_order/?orderId={{ orderId }}">保存编辑</a> {% endcomment %}
+                    <button class="btn btn-primary" id="btnEditWorkOrder">编辑信息</button>
+                </div>
+            </div>
+            <div class='panel-body'>
+                <form id='formInfo' novalidate>
+                    <div class='clearfix'>
+                    {% for field in workOrderInfoForm %}
+                        <div class='col-xs-6'>
+                            <label >{{field.label}}</label>
+                            {{field}}
+                            <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+                            <span class='error-msg' style="color: red;"></span> <br>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑委托信息（对话框） -->
+    <div class="modal fade" id="workOrderEditModal" tabindex="-1" role="dialog" aria-labelledby="workOrderEditModalLabel">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="workOrderEditModalLabel">编辑项目信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id='formWorkOrderEdit' novalidate>
+                    <div class='clearfix'>
+                    {% for field in workOrderEditForm %}
+                        <div class='col-xs-6'>
+                            <label >{{field.label}}</label>
+                            {{field}}
+                            <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+                            <span class='error-msg' style="color: red;">{{field.errors.0}}</span> <br>
+                        </div>
+                    {% endfor %}
+                    </div>
+
+                    {% comment %} <button id='btnAdd' type="button" class="btn btn-primary">提 交</button> {% endcomment %}
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button id='btnSubmitEditWorkOrder' type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type='text/javascript'>
+        $(function () {
+            bindBtnEditOrder();
+            bindBtnSubmitEditOrder();
+        })
+        
+        function bindBtnEditOrder() {
+            $('#btnEditWorkOrder').click(function () {
+                $('#formWorkOrderEdit')[0].reset();
+                // 修改对话框标题
+                $('#workOrderEditModalLabel').text('新增项目');
+                // 点击按钮，显示对话框
+                $('#workOrderEditModal').modal('show');
+            })
+        }
+
+        function bindBtnSubmitEditOrder() {
+            $('#btnSubmitEditWorkOrder').click(function () {
+                $.ajax({
+                    url: '/salesman/edit_workorder/?workOrderId={{ workOrderId }}', 
+                    type: 'post',
+                    data: $('#formWorkOrderEdit').serialize(),
+                    success: function (res) {
+                        if (res.status) {
+                            // 清空表单 $('#formAdd')返回JQuery对象；$('#formAdd')[0]返回DOM对象
+                            $('#formWorkOrderEdit')[0].reset();
+                            // 关闭对话框
+                            $('#workOrderEditModal').modal('hide');
+                            //! 刷新页面
+                            location.reload();
+
+                        }else {
+                            $.each(res.error , function (name, data) {
+                                $('#id_' + name).next().text(data[0]);
+                            })
+                        }
+                    }
+                })
+            })
+        }
+
+    </script>
+
+{% endblock js %}
+
+

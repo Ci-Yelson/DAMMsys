@@ -1,0 +1,199 @@
+{% extends 'layout/home.html' %}
+
+{% block style %}
+    #main {
+        width: 200px;
+        //height: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .one {
+        margin-top:2px;
+        font-size:18px;
+        font-weight:900;
+        //background-color: aquamarine;
+    }
+    .two {
+        //margin-top:6px;
+        //background-color: peru;
+    }
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="/salesman/">业务员主页</a></li>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <div class='panel panel-default'>
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 个人信息</div>
+                </div>    
+            </div>
+            <div class='panel-body'>
+                <form id='formInfoShow' novalidate>
+                    <div class='clearfix'>
+                    {% for field in formInfo %}
+                        <div class='col-xs-4'>
+                            <label >{{field.label}}</label>
+                            {{field}}
+                            <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+                            <span class='error-msg' style="color: red;"></span> <br>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 【待受理】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        委托列表
+                        <span class="label label-primary"> 待受理 </span> 
+                    </div>
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>维修类型</th>
+                    <th>结算方式</th>
+                    <th>客户名称</th>
+                    <th>车型</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in orderList_1 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.get_payway_display }}</td>
+                        <td>{{ obj.customerName }}</td>
+                        <td>{{ obj.vin.carType }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/salesman/order_detail/?orderId={{ obj.orderId }}">查看详细信息</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+    <!-- 【正在维修】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        委托列表
+                        <span class="label label-danger"> 已受理-进行中 </span> 
+                    </div>
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>维修类型</th>
+                    <th>结算方式</th>
+                    <th>客户名称</th>
+                    <th>车型</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in orderList_2 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.get_payway_display }}</td>
+                        <td>{{ obj.customerName }}</td>
+                        <td>{{ obj.vin.carType }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/salesman/order_detail/?orderId={{ obj.orderId }}">查看维修进度</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+    <!-- 【已完成维修】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        委托列表
+                        <span class="label label-default"> 已受理-已完成 </span> 
+                    </div>
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>维修类型</th>
+                    <th>结算方式</th>
+                    <th>客户名称</th>
+                    <th>车型</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in orderList_3 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.get_payway_display }}</td>
+                        <td>{{ obj.customerName }}</td>
+                        <td>{{ obj.vin.carType }}</td>
+                        <td>
+                            <a class="btn btn-primary btn-xs" href="/salesman/order_detail/?orderId={{ obj.orderId }}">查看委托详情</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+    <script type='text/javascript'>
+
+    </script>
+
+{% endblock js %}
+
+

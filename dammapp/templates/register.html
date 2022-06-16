@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DAMM汽车维修管理系统</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.min.css' %}"
+    />
+    <style>
+      /*设置背景图片*/
+      body {
+        background: url("{% static 'img/bg.jpg' %}") no-repeat;
+        background-size: cover;
+      }
+
+      .account {
+        background-color: #ffffff;
+        width: 400px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+        box-shadow: 5px 5px 20px #aaa;
+
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+        padding: 20px 40px;
+      }
+
+      .account h2 {
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .bd-example {
+        margin-right: 10px;
+        margin-left: 0;
+        margin-bottom: 10px;
+        border-width: 1px;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
+      }
+
+      .form-check-inline {
+        display: inline-block;
+        margin-right: 1rem;
+      }
+
+      .all {
+        display: flex;
+        height: 70px;
+      }
+      .left {
+        width: 100px;
+        height: 50px;
+        justify-content: flex-start;
+        display: flex;
+        align-items: center;
+      }
+      .right {
+        flex: 1;
+        height: 50px;
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="account">
+      <h2>新客户注册</h2>
+      <form method="POST" novalidate>
+        {% csrf_token %} {% for field in form %}
+        <label>{{field.label}}</label>
+        {{field}}
+        <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+        <span class="error-msg" style="color: red"> {{field.errors.0}}</span>
+        <br />
+        {% endfor %}
+
+        <div class="all">
+          <div class="left">
+            <input type="submit" value="注 册" class="btn btn-primary" />
+          </div>
+          <div class="right">
+            <a href="/login">返回登录界面</a>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+{% extends 'layout/home.html' %}
+
+{% block style %}
+    #main {
+        width: 200px;
+        //height: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .one {
+        margin-top:2px;
+        font-size:18px;
+        font-weight:900;
+        //background-color: aquamarine;
+    }
+    .two {
+        //margin-top:6px;
+        //background-color: peru;
+    }
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="/maintenanceman/">维修员主页</a></li>
+{% endblock %} 
+
+{% block content %}
+    <!-- 个人信息 -->
+    <div class="container">
+        <div class='panel panel-default'>
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 个人信息</div>
+                </div>    
+            </div>
+            <div class='panel-body'>
+                <form id='formInfoShow' novalidate>
+                    <div class='clearfix'>
+                    {% for field in formInfo %}
+                        <div class='col-xs-4'>
+                            <label >{{field.label}}</label>
+                            {{field}}
+                            <!-- 显示错误信息（field.errors值为列表，.0访问第一个元素） -->
+                            <span class='error-msg' style="color: red;"></span> <br>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 【进行中】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <span class="one label label-danger"> 进行中 </span> 
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>发布日期</th>
+                    <th>维修类型</th>
+                    <th>车架号</th>
+                    <th>车型</th>
+                    <th>项目名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in workOrderList_2 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.orderId.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.orderId.vin.vin }}</td>
+                        <td>{{ obj.orderId.vin.carType }}</td>
+                        <td>{{ obj.itemId.itemName }}</td>
+                        <td>{{ obj.startTime | date:'Y-m-d H:i:s' }}</td>
+                        <td>{{ obj.endTime | date:'Y-m-d H:i:s' }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/maintenanceman/workorder_detail/?workOrderId={{ obj.workOrderId }}">查看详细信息</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+    <!-- 【待开始】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        派工单列表
+                        <span class="label label-primary"> 待开始 </span> 
+                    </div>
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>发布日期</th>
+                    <th>维修类型</th>
+                    <th>车架号</th>
+                    <th>车型</th>
+                    <th>项目名称</th>
+                    {% comment %} <th>开始时间</th>
+                    <th>结束时间</th> {% endcomment %}
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in workOrderList_1 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.orderId.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.orderId.vin.vin }}</td>
+                        <td>{{ obj.orderId.vin.carType }}</td>
+                        <td>{{ obj.itemId.itemName }}</td>
+                        {% comment %} <td>{{ obj.startTime | date:'Y-m-d H:i:s' }}</td>
+                        <td>{{ obj.endTime | date:'Y-m-d H:i:s' }}</td> {% endcomment %}
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/maintenanceman/workorder_detail/?workOrderId={{ obj.workOrderId }}">查看详细信息</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+    
+
+    <!-- 【已完成】列表 -->
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class='panel-heading'> 
+                <div id='main'> 
+                    <div class='one'> 
+                        派工单列表
+                        <span class="label label-default"> 已完成 </span> 
+                    </div>
+                </div>    
+            </div>
+          
+            <!-- Table -->
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>发布日期</th>
+                    <th>维修类型</th>
+                    <th>车架号</th>
+                    <th>车型</th>
+                    <th>项目名称</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for obj in workOrderList_3 %}
+                    <tr>
+                        <th scope="row">{{ obj.recordDate | date:'Y-m-d' }}</th>
+                        {% if obj.orderId.maintenanceType == 2 %}
+                            <td><span class="label label-danger">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% else %}
+                            <td><span class="label label-success">{{ obj.orderId.get_maintenanceType_display }}</span></td>
+                        {% endif %}
+                        <td>{{ obj.orderId.vin.vin }}</td>
+                        <td>{{ obj.orderId.vin.carType }}</td>
+                        <td>{{ obj.itemId.itemName }}</td>
+                        <td>{{ obj.startTime | date:'Y-m-d H:i:s' }}</td>
+                        <td>{{ obj.endTime | date:'Y-m-d H:i:s' }}</td>
+                        <td>
+                            <a class="btn btn-danger btn-xs" href="/maintenanceman/workorder_detail/?workOrderId={{ obj.workOrderId }}">查看详细信息</a>
+                        </td>
+                    {% endfor %}
+                </tbody>
+              </table>
+          </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script type='text/javascript'>
+
+    </script>
+
+{% endblock js %}
+
+
